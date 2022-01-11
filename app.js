@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
 const path =require('path')
-const myLogger=(req,re,next)=>{
+const myLogger=(req,res,next)=>{
     console.log("Middleware Log 1")
     next()
 }
-const myLogger2=(req,re,next)=>{
+const myLogger2=(req,res,next)=>{
     console.log("Middleware Log 2")
     next()
 }
