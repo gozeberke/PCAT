@@ -2,7 +2,15 @@ const express = require('express');
 const ejs=require('ejs')
 const path =require('path')
 const app = express();
+const Photo=require("./models/Photo")
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/pcat-test-db', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 // Template Engine
+
 app.set("view engine","ejs") // templat olarak ejs kullanacağız
 
 /*
@@ -23,9 +31,12 @@ app.use(express.urlencoded({extended:true})) // url deki datayı okumamızı sa�
 app.use(express.json()) //url deki data json formatına dönüştürmemizi sağlıyor
 
 //ROUTES
-app.get('/', (req, res) => {
+app.get('/', async(req, res) => {
+    const photos=await Photo.find({})
     //res.sendFile(path.resolve(__dirname,'temp/index.html'))
-    res.render("index")
+    res.render("index",{
+        photos:photos
+    })
 });
 app.get('/about', (req, res) => {
     res.render("about")
@@ -35,8 +46,8 @@ app.get('/add', (req, res) => {
     res.render("add")
 });
 
-app.post('/photos', (req, res) => {
-    console.log(req.body)
+app.post('/photos', async(req, res) => {
+    await Photo.create(req.body)
     res.redirect('/')
 });
 
