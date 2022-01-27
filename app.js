@@ -5,7 +5,8 @@ const app = express();
 const Photo = require('./models/Photo');
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
-const { assert } = require('console');
+const methodOverride = require('method-override')
+//const { assert } = require('console');
 const fs = require('fs');
 mongoose.connect('mongodb://localhost/pcat-test-db', {
   useNewUrlParser: true,
@@ -21,6 +22,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true })); // url deki datayı okumamızı sağlıyor
 app.use(express.json()); //url deki data json formatına dönüştürmemizi sağlıyor
 app.use(fileUpload());
+app.use(methodOverride('_method')) // post işlemini put işlemi gibi simüle etmek için
 
 //ROUTES
 app.get('/', async (req, res) => {
@@ -60,6 +62,19 @@ app.post('/photos', async (req, res) => {
     res.redirect('/');
   });
 });
+app.get('/photos/edit/:id',async(req,res)=>{
+  const photo=await Photo.findOne({_id:req.params.id})
+  res.render('edit',{
+    photo
+  })
+})
+app.put('/photos/:id',async(req,res)=>{
+  const photo=await Photo.findOne({_id:req.params.id})
+  photo.title=req.body.title
+  photo.description=req.body.description
+  photo.save()
+  res.redirect(`/photos/${req.params.id}`)
+})
 
 const port = 3000;
 app.listen(port, () => {
