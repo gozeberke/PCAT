@@ -7,7 +7,7 @@ const photoController=require('./controllers/photo')
 const pageController=require('./controllers/pageController')
 const app = express();
 
-mongoose.connect('mongodb+srv://berke:fCsTBugvh13nwrBr@cluster0.yoxmw.mongodb.net/pcat-db?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://berke:@cluster0.yoxmw.mongodb.net/pcat-db?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   
