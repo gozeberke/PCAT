@@ -7,11 +7,15 @@ const photoController=require('./controllers/photo')
 const pageController=require('./controllers/pageController')
 const app = express();
 
-mongoose.connect('mongodb://localhost/pcat-test-db', {
+mongoose.connect('mongodb+srv://berke:fCsTBugvh13nwrBr@cluster0.yoxmw.mongodb.net/pcat-db?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   
-});
+}).then(()=>{
+  console.log('DB CONECCTED')
+}).catch((err)=>{
+  console.log(err)
+})
 // Template Engine
 
 app.set('view engine', 'ejs'); // templat olarak ejs kullanacağız
@@ -37,7 +41,7 @@ app.get('/about',pageController.getAboutPage);
 app.get('/add',pageController.getAddPage);
 app.get('/photos/edit/:id',pageController.getEditPage)
 
-const port = 3000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Sunucu ${port} portunda başlatıldı. `);
 });
